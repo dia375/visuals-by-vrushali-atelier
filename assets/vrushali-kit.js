@@ -1,4 +1,4 @@
-/* Visuals by Vrushali — shared kit used by all three site versions.
+/* Nova Visuals — shared kit used by all three site versions.
    - VRU.character(): Vrushali's illustrated director character (SVG string)
    - VRU.mark(): the four-petal brand mark from her portfolio
    - VRU.initMedia(root): hover-preview / play-pause for video slots, with still-image fallback
