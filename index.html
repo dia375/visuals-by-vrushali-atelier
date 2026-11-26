@@ -284,9 +284,35 @@ footer a{text-decoration:none;opacity:.75}footer a:hover{opacity:1}
     </figure>
   </article>
 
+  <article class="ch" style="--accent:var(--gold)">
+    <div class="ch-copy">
+      <div class="label fx">Services provided</div>
+      <h2><span class="ln"><span>Product showcase</span></span><span class="ln"><span><span class="serif">&amp; unboxing</span></span></span><span class="ln"><span>films.</span></span></h2>
+      <p class="fx">Features and benefits shown with clean, confident motion, and first-look reveals that build excitement. All from your product photos, no shoot needed.</p>
+    </div>
+    <figure class="plate land">
+      <div class="frame"><img src="assets/jewel-necklace.jpg" alt="Diamond and emerald necklace on navy velvet"></div>
+      <figcaption class="cap"><b>Product showcase</b><span>Showcase · Unboxing</span></figcaption>
+    </figure>
+  </article>
+
+  <article class="ch" style="--accent:#8A4B3A">
+    <div class="ch-copy">
+      <div class="label fx">Services provided</div>
+      <h2><span class="ln"><span>Aesthetic, voiceover</span></span><span class="ln"><span>and <span class="serif">lifestyle</span></span></span><span class="ln"><span>ads.</span></span></h2>
+      <p class="fx">Slow, cinematic close-ups, story-led narration, problem-to-solution ads and everyday scenes that put your product in your customer's day.</p>
+    </div>
+    <figure class="plate port">
+      <div class="frame"><img src="assets/food-chocolate.jpg" alt="Swirl of rich chocolate with steam"></div>
+      <figcaption class="cap"><b>Aesthetic ad</b><span>Aesthetic · Voiceover · Lifestyle</span></figcaption>
+    </figure>
+  </article>
+
   <div class="chapnav" aria-label="Chapters">
     <button data-i="0" aria-current="true">01<span> Intro</span></button>
     <button data-i="1">02<span> About</span></button>
+    <button data-i="2">03<span> Showcase</span></button>
+    <button data-i="3">04<span> Story ads</span></button>
     <div class="bar"><i id="storyBar"></i></div>
   </div>
 </section>
@@ -433,6 +459,8 @@ footer a{text-decoration:none;opacity:.75}footer a:hover{opacity:1}
   const SC = [
     { bg: '#1E1513', ink: '#F4ECE2' },
     { bg: '#EDE3D7', ink: '#1E1513' },
+    { bg: '#141938', ink: '#F4ECE2' },
+    { bg: '#E4D5C3', ink: '#1E1513' },
   ];
   const N = chs.length - 1;
   const parts = (c) => ({ lines: c.querySelectorAll('.ln>span'), fx: c.querySelectorAll('.fx'), frame: c.querySelector('.frame'), img: c.querySelector('.frame img'), plate: c.querySelector('.plate'), cap: c.querySelector('.cap') });
