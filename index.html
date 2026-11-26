@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visuals by Vrushali · AI Video Ads</title>
+<meta name="description" content="Visuals by Vrushali: AI video ads that turn product images into cinematic visual stories, without a traditional shoot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --espresso:#1E1513; --choc:#2A1C18; --cream:#F4ECE2; --sand:#E7DACA; --blush:#E9C3CC; --rose:#C98496;
+  --gold:#C9A15B; --emerald:#10302A; --velvet:#141938;
+  --line:rgba(30,21,19,.16);
+  --ease:cubic-bezier(.22,.8,.24,1);
+  --sans:'Bricolage Grotesque',system-ui,sans-serif; --serif:'Instrument Serif',Georgia,serif;
+  --gut:clamp(16px,5vw,80px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);font-variation-settings:'wdth' 100;background:var(--cream);color:var(--espresso);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.serif{font-family:var(--serif);font-weight:400;font-style:normal;letter-spacing:0}
+.label{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+.ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.ln>span{display:block}
+
+/* ---------- NAV ---------- */
+.nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px var(--gut);color:#fff;mix-blend-mode:difference;pointer-events:none}
+.nav>*{pointer-events:auto}
+.nav{transition:background .4s,padding .4s}
+.nav.solid{mix-blend-mode:normal;color:var(--cream);background:rgba(30,21,19,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding-top:14px;padding-bottom:14px}
+.nav.solid .cta:hover{background:var(--cream);color:var(--espresso)}
+.brand{text-decoration:none;font-size:17px;font-weight:600;letter-spacing:-.005em}
+.brand .serif{font-size:1.15em}
+.nav-links{display:flex;align-items:center;gap:clamp(16px,2.4vw,36px);font-size:14px;font-weight:500}
+.nav-links a{text-decoration:none;position:relative}
+.nav-links a:not(.cta)::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.nav-links a:not(.cta):hover::after{transform:scaleX(1);transform-origin:left}
+.nav-links .cta{padding:10px 18px;border:1px solid currentColor;border-radius:2px;transition:background .3s,color .3s}
+.nav-links .cta:hover{background:#fff;color:#000}
+@media (max-width:760px){.nav-links a:not(.cta){display:none}.nav{padding:18px 16px}}
+
+/* ---------- STORY (pinned chapters) ---------- */
+#story{--bg:#1E1513;--ink:#F4ECE2;position:relative;height:100vh;height:100svh;overflow:hidden;background:var(--bg);color:var(--ink)}
+#story::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.ch{position:absolute;inset:0;pointer-events:none}
+.ch.on{pointer-events:auto}
+.ch-copy{position:absolute;left:var(--gut);top:50%;transform:translateY(-50%);width:min(600px,42vw)}
+.ch-copy .label{display:flex;align-items:center;gap:14px;color:color-mix(in srgb,var(--ink) 72%,transparent);margin-bottom:24px}
+.ch-copy .label::before{content:"";width:36px;height:1px;background:currentColor}
+.ch h1,.ch h2{font-weight:500;font-variation-settings:'wdth' 92;letter-spacing:-.012em;line-height:1}
+.ch h1{font-size:clamp(48px,min(7.2vw,13vh),140px)}
+.ch h2{font-size:clamp(36px,min(4.6vw,8.6vh),86px);line-height:1.04}
+.ch h1 .serif,.ch h2 .serif{color:var(--accent,var(--blush))}
+.ch p{margin-top:26px;font-size:clamp(16px,1.2vw,19px);line-height:1.6;max-width:42ch;color:color-mix(in srgb,var(--ink) 82%,transparent)}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.plate{position:absolute;right:var(--gut);top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;padding-top:40px}
+.plate.land{width:min(44vw,64vh*1.333)}
+.plate.port{width:min(32vw,66vh*.75);right:calc(var(--gut) + 4vw)}
+.frame{position:relative;overflow:hidden;border-radius:3px;box-shadow:0 40px 80px -40px rgba(0,0,0,.55)}
+.plate.land .frame{aspect-ratio:4/3}
+.plate.port .frame{aspect-ratio:3/4}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--focus,50% 50%);will-change:transform}
+.cap{display:flex;justify-content:space-between;gap:16px;margin-top:14px;font-size:13px;opacity:.7}
+.cap b{font-weight:600}
+@media (min-width:761px) and (max-aspect-ratio:5/4){
+  .ch-copy{top:clamp(110px,16vh,160px);transform:none;width:min(640px,84vw)}
+  .plate{top:auto;bottom:96px;padding:0}
+  .plate.land{width:min(60vw,40vh*1.333)}.plate.port{width:min(40vw,40vh*.75)}
+}
+@media (max-width:760px){
+  .ch-copy{top:88px;transform:none;width:auto;right:16px}
+  .ch-copy .label{margin-bottom:14px}
+  .ch h1{font-size:clamp(42px,12.5vw,60px)}
+  .ch h2{font-size:clamp(30px,8.6vw,42px)}
+  .ch p{margin-top:14px;font-size:15px;line-height:1.5}
+  .ctas{margin-top:20px}
+  .plate{top:auto;bottom:76px;padding:0;left:0;right:0;margin:0 auto}
+  .plate.land{width:min(calc(100vw - 32px),34svh*1.333)}.plate.port{width:min(70vw,40svh*.75)}
+  .ch:first-child .plate.port{width:min(56vw,30svh*.75)}
+  .ch:first-child .btn-line{display:none}
+  .cap{display:none}
+}
+@media (max-width:760px) and (max-height:700px){.ch p{display:none}}
+
+.chapnav{position:absolute;z-index:5;left:var(--gut);right:var(--gut);bottom:24px;display:flex;align-items:center;gap:clamp(14px,2.4vw,34px)}
+.chapnav button{border:0;background:none;cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.45;transition:opacity .4s;padding:6px 0;display:flex;gap:8px}
+.chapnav button[aria-current=true]{opacity:1}
+.chapnav button:hover{opacity:.9}
+.chapnav .bar{flex:1;height:1px;background:color-mix(in srgb,currentColor 22%,transparent);position:relative;min-width:40px}
+.chapnav .bar i{position:absolute;inset:0;background:currentColor;transform-origin:left;transform:scaleX(0)}
+@media (max-width:760px){.chapnav{bottom:20px;left:16px;right:16px;gap:12px}.chapnav button span{display:none}}
+
+.btn{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-weight:600;font-size:15px;padding:16px 24px;border-radius:2px;border:1px solid currentColor;background:transparent;cursor:pointer;transition:background .35s var(--ease),color .35s var(--ease),border-color .35s}
+.btn .arr{transition:transform .45s var(--ease)}
+.btn:hover .arr{transform:translateX(5px)}
+.btn-fill{background:var(--ink,var(--cream));color:var(--bg,var(--espresso));border-color:var(--ink,var(--cream))}
+.btn-fill:hover{background:var(--blush);border-color:var(--blush);color:var(--espresso)}
+.btn-line:hover{background:var(--ink,var(--cream));color:var(--bg,var(--espresso))}
+
+/* ---------- BANNER ---------- */
+.banner{background:var(--espresso);color:var(--cream);overflow:hidden;padding:clamp(22px,3vw,40px) 0;border-top:1px solid rgba(244,236,226,.1)}
+.banner .track{display:flex;width:max-content;will-change:transform}
+.banner span{font-family:var(--serif);font-size:clamp(34px,5vw,80px);line-height:1;white-space:nowrap;padding-right:.6em}
+.banner span i{font-style:normal;color:var(--gold);padding:0 .45em;font-size:.6em;vertical-align:.18em}
+
+/* ---------- SECTIONS ---------- */
+section.s{position:relative;padding:clamp(96px,12vw,170px) var(--gut)}
+.wrap{max-width:1360px;margin:0 auto}
+.s-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px;align-items:end;margin-bottom:clamp(48px,6vw,88px)}
+.s-head .label{grid-column:1/-1;display:flex;gap:14px;align-items:center;opacity:.7}
+.s-head .label::before{content:"";width:36px;height:1px;background:currentColor}
+.s-head h2{font-size:clamp(40px,5.4vw,96px);font-weight:500;font-variation-settings:'wdth' 92;letter-spacing:-.012em;line-height:1.02}
+.s-head h2 .serif{color:var(--rose)}
+.s-head p{font-size:clamp(16px,1.2vw,19px);line-height:1.6;opacity:.75;max-width:46ch;justify-self:end}
+@media (max-width:860px){.s-head{grid-template-columns:1fr}.s-head p{justify-self:start}}
+
+/* formats list */
+#formats{background:var(--cream)}
+.fmt{list-style:none;border-top:1px solid var(--line)}
+.fmt a{display:grid;grid-template-columns:70px minmax(0,1.1fr) minmax(0,1.3fr) 180px 30px;gap:24px;align-items:center;padding:clamp(22px,2.6vw,34px) 0;border-bottom:1px solid var(--line);text-decoration:none;position:relative}
+.fmt a::before{content:"";position:absolute;inset:-1px calc(var(--gut) * -1);background:var(--espresso);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease);z-index:0}
+.fmt a>*{position:relative;z-index:1;transition:color .4s var(--ease),transform .55s var(--ease)}
+.fmt .n{font-family:var(--serif);font-size:22px;opacity:.6}
+.fmt h3{font-size:clamp(26px,2.8vw,46px);font-weight:500;font-variation-settings:'wdth' 92;letter-spacing:-.01em;line-height:1.05}
+.fmt p{font-size:16px;line-height:1.55;opacity:.75;max-width:40ch}
+.fmt .t{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.6;justify-self:end}
+.fmt .arr{justify-self:end;font-size:20px}
+@media (hover:hover){
+  .fmt a:hover::before{transform:scaleY(1);transform-origin:top}
+  .fmt a:hover>*{color:var(--cream)}
+  .fmt a:hover h3{transform:translateX(10px)}
+  .fmt a:hover .arr{transform:translateX(-6px)}
+}
+@media (max-width:900px){
+  .fmt a{grid-template-columns:44px 1fr;gap:8px 16px}
+  .fmt p{grid-column:2}.fmt .t{grid-column:2;justify-self:start}.fmt .arr{display:none}
+}
+.peek{position:fixed;left:0;top:0;z-index:40;width:260px;aspect-ratio:3/4;pointer-events:none;overflow:hidden;border-radius:3px;opacity:0;transform:translate(-50%,-50%) scale(.9);box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+.peek img{width:100%;height:100%;object-fit:cover}
+
+/* work */
+#work{background:var(--espresso);color:var(--cream)}
+#work .s-head h2 .serif{color:var(--blush)}
+#work .s-head .label{opacity:.6}
+.controls{display:flex;flex-wrap:wrap;justify-content:space-between;gap:18px 32px;margin-bottom:40px;padding-bottom:18px;border-bottom:1px solid rgba(244,236,226,.14)}
+.seg{display:flex;flex-wrap:wrap;gap:6px 26px}
+.seg button{border:0;background:none;cursor:pointer;font-size:14px;font-weight:500;padding:6px 0;opacity:.55;position:relative;transition:opacity .3s}
+.seg button::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.seg button:hover{opacity:.9}
+.seg button[aria-pressed=true]{opacity:1}
+.seg button[aria-pressed=true]::after{transform:scaleX(1)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2vw,32px);align-items:start}
+@media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+.item{min-width:0}
+.item .media{aspect-ratio:var(--ar,9/16);border-radius:3px;background:#2A1C18}
+.grid[data-ar="9/16"]{--ar:9/16}.grid[data-ar="16/9"]{--ar:16/9}.grid[data-ar="1/1"]{--ar:1/1}
+.item figcaption{padding-top:16px;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.item h3{font-size:19px;font-weight:500;letter-spacing:-.005em}
+.item .tags{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.55;white-space:nowrap}
+.item.hide{display:none}
+.item-ig .media{display:flex;flex-direction:column;justify-content:space-between;padding:28px;background:linear-gradient(160deg,#3A2622,#1E1513);border:1px solid rgba(244,236,226,.14);text-decoration:none;color:var(--cream)}
+.item-ig .media b{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3vw,46px);line-height:1.05}
+.item-ig .media small{font-size:14px;opacity:.75}
+.item-ig .media:hover{background:linear-gradient(160deg,#4A302B,#24191A)}
+
+dialog.lb{border:0;padding:0;background:transparent;max-width:min(92vw,1040px);width:100%;margin:auto;overflow:visible}
+dialog.lb::backdrop{background:rgba(16,11,10,.86);backdrop-filter:blur(6px)}
+.lb-in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);border-radius:3px;overflow:hidden;background:var(--cream)}
+.lb-in img{width:100%;height:100%;max-height:80vh;object-fit:contain;background:#140E0D}
+.lb-copy{padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:16px;color:var(--espresso);justify-content:center}
+.lb-copy .label{opacity:.6}
+.lb-copy h3{font-size:clamp(28px,2.6vw,40px);font-weight:500;font-variation-settings:'wdth' 92;letter-spacing:-.01em;line-height:1.05}
+.lb-copy p{line-height:1.6;opacity:.8}
+.lb-copy .btn{align-self:flex-start;margin-top:8px}
+.lb-copy .btn:hover{background:var(--espresso);color:var(--cream)}
+.lb-close{position:absolute;top:-52px;right:0;width:40px;height:40px;border-radius:2px;border:1px solid rgba(244,236,226,.4);background:none;color:var(--cream);font-size:18px;cursor:pointer}
+@media (max-width:720px){.lb-in{grid-template-columns:1fr}.lb-in img{max-height:48vh}}
+
+/* why */
+#why{background:var(--sand)}
+.why{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.why li{list-style:none;padding:clamp(24px,3vw,44px) clamp(18px,2vw,32px) clamp(30px,3.4vw,52px) 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:40px}
+.why li:not(:nth-child(3n+1)){padding-left:clamp(18px,2vw,32px);border-left:1px solid var(--line)}
+.why .n{font-family:var(--serif);font-size:22px;color:var(--rose)}
+.why b{font-size:clamp(22px,2vw,32px);font-weight:500;font-variation-settings:'wdth' 92;letter-spacing:-.01em;line-height:1.12}
+@media (max-width:860px){.why{grid-template-columns:1fr 1fr}.why li:not(:nth-child(3n+1)){padding-left:0;border-left:0}.why li:nth-child(2n){padding-left:20px;border-left:1px solid var(--line)}}
+@media (max-width:520px){.why{grid-template-columns:1fr}.why li:nth-child(2n){padding-left:0;border-left:0}.why li{gap:18px}}
+
+/* process */
+#process{background:var(--sand);overflow:hidden}
+.proc{display:flex;align-items:stretch;width:max-content;padding:clamp(80px,10vh,120px) var(--gut);min-height:100vh;min-height:100svh}
+.proc-intro{flex:0 0 min(460px,80vw);align-self:center;padding-right:clamp(40px,6vw,100px)}
+.proc-intro .label{display:flex;gap:14px;align-items:center;opacity:.7;margin-bottom:24px}
+.proc-intro .label::before{content:"";width:36px;height:1px;background:currentColor}
+.proc-intro h2{font-size:clamp(40px,4.6vw,80px);font-weight:500;font-variation-settings:'wdth' 92;letter-spacing:-.012em;line-height:1.02}
+.proc-intro h2 .serif{color:var(--rose)}
+.proc-intro p{margin-top:20px;font-size:17px;opacity:.75}
+.step{flex:0 0 clamp(270px,24vw,380px);border-left:1px solid var(--line);padding:0 clamp(20px,2.4vw,36px);display:flex;flex-direction:column;justify-content:space-between;gap:40px;align-self:center;min-height:min(62vh,520px)}
+.step .n{font-family:var(--serif);font-size:clamp(96px,10vw,168px);line-height:.8;color:var(--espresso);opacity:.18;transition:opacity .6s var(--ease),color .6s var(--ease)}
+.step.on .n{opacity:1;color:var(--rose)}
+.step h3{font-size:clamp(24px,2vw,32px);font-weight:500;font-variation-settings:'wdth' 92;letter-spacing:-.01em}
+.step p{margin-top:12px;font-size:16px;line-height:1.55;opacity:.75}
+.proc-bar{position:absolute;left:var(--gut);right:var(--gut);bottom:clamp(36px,6vh,64px);height:1px;background:var(--line)}
+.proc-bar i{position:absolute;inset:0;background:var(--espresso);transform-origin:left;transform:scaleX(0)}
+@media (max-width:899px){
+  .proc{flex-direction:column;width:auto;min-height:0;padding:clamp(80px,12vw,120px) var(--gut)}
+  .proc-intro{flex:none;padding:0 0 40px}
+  .step{flex:none;min-height:0;border-left:0;border-top:1px solid var(--line);padding:28px 0;flex-direction:row;align-items:flex-start;gap:24px}
+  .step .n{font-size:72px;min-width:76px}
+  .proc-bar{display:none}
+}
+
+/* contact */
+#contact{background:var(--espresso);color:var(--cream)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,110px);align-items:start}
+@media (max-width:900px){.contact-grid{grid-template-columns:1fr}}
+.contact-copy .label{display:flex;gap:14px;align-items:center;opacity:.6}
+.contact-copy .label::before{content:"";width:36px;height:1px;background:currentColor}
+.contact-copy h2{margin-top:24px;font-size:clamp(44px,6vw,108px);font-weight:500;font-variation-settings:'wdth' 92;letter-spacing:-.012em;line-height:1.02}
+.contact-copy h2 .serif{color:var(--blush)}
+.contact-copy p{margin-top:26px;font-size:18px;line-height:1.6;opacity:.75;max-width:42ch}
+.links{margin-top:40px;border-top:1px solid rgba(244,236,226,.16)}
+.links a{display:flex;justify-content:space-between;align-items:center;gap:12px;text-decoration:none;padding:20px 0;border-bottom:1px solid rgba(244,236,226,.16);font-size:clamp(16px,1.5vw,22px);transition:padding .5s var(--ease),color .3s;overflow-wrap:anywhere}
+.links a:hover{padding-left:12px;color:var(--blush)}
+form.inq{background:var(--cream);color:var(--espresso);border-radius:3px;padding:clamp(24px,3.4vw,48px);display:grid;gap:26px}
+form.inq h3{font-size:clamp(24px,2vw,30px);font-weight:500;font-variation-settings:'wdth' 92;letter-spacing:-.01em}
+.field{display:grid;gap:8px}
+.field label,.field .lbl{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.6}
+.field input,.field textarea,.field select{font:inherit;font-size:17px;padding:10px 0 12px;border:0;border-bottom:1px solid rgba(30,21,19,.28);border-radius:0;background:transparent;color:var(--espresso);transition:border-color .3s}
+.field select{appearance:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231E1513' stroke-width='1.5'/%3E%3C/svg%3E") right 4px center no-repeat;padding-right:24px}
+.field input:focus,.field textarea:focus,.field select:focus{outline:0;border-color:var(--espresso)}
+.field textarea{min-height:96px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chips button{border:1px solid rgba(30,21,19,.24);background:transparent;padding:9px 14px;border-radius:2px;font-weight:500;font-size:14px;cursor:pointer;transition:background .3s,color .3s,border-color .3s}
+.chips button:hover{border-color:var(--espresso)}
+.chips button[aria-pressed=true]{background:var(--espresso);color:var(--cream);border-color:var(--espresso)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media (max-width:520px){.row2{grid-template-columns:1fr}}
+form.inq .btn{justify-self:start;background:var(--espresso);color:var(--cream);border-color:var(--espresso)}
+form.inq .btn:hover{background:var(--rose);border-color:var(--rose);color:var(--espresso)}
+footer{background:var(--espresso);color:var(--cream);padding:28px var(--gut);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:14px;border-top:1px solid rgba(244,236,226,.12)}
+footer span{opacity:.6}
+footer a{text-decoration:none;opacity:.75}footer a:hover{opacity:1}
+
+/* kit overrides: calmer media controls */
+.media-play{border-radius:2px!important;width:42px!important;height:42px!important;transition:background .3s!important}
+.media-play:hover{transform:none!important;background:#fff!important}
+.media-badge{border-radius:2px!important;font-family:var(--sans)!important}
+.vru-toast{border-radius:3px!important;font-family:var(--sans)!important}
+
+.reveal{opacity:0;transform:translateY(32px)}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none}}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <a class="brand" href="#story">Visuals <span class="serif">by</span> Vrushali</a>
+  <div class="nav-links">
+    <a href="#formats">Formats</a><a href="#work">Work</a><a href="#process">Process</a>
+    <a class="cta" href="#contact">Start a project</a>
+  </div>
+</nav>
+
+<!-- ============ STORY ============ -->
+<section id="story" aria-label="Introduction">
+  <article class="ch on">
+    <div class="ch-copy">
+      <div class="label fx">AI video ad creator</div>
+      <h1><span class="ln"><span>Visuals <span class="serif">by</span></span></span><span class="ln"><span>Vrushali</span></span></h1>
+      <p class="fx">Transforming product images and creative concepts into cinematic visual stories that stop the scroll. No physical shoot required.</p>
+      <div class="ctas fx"><a class="btn btn-fill" href="#work">View selected work <span class="arr">→</span></a><a class="btn btn-line" href="#contact">Start a project</a></div>
+    </div>
+    <figure class="plate port">
+      <div class="frame" style="--focus:26% 40%"><img src="assets/ugc-fragrance.jpg" alt="Creator-style fragrance Reel"></div>
+      <figcaption class="cap"><b>Azalea fragrance</b><span>UGC Reel · 9:16</span></figcaption>
+    </figure>
+  </article>
+
+  <article class="ch" style="--accent:#A65D70">
+    <div class="ch-copy">
+      <div class="label fx">About</div>
+      <h2><span class="ln"><span>Hello, I'm</span></span><span class="ln"><span class="serif">Vrushali.</span></span></h2>
+      <p class="fx">I'm an AI video creator who loves visual storytelling, creative concepts and digital advertising. I take product photographs and ideas and turn them into imaginative, cinematic video ads that help brands stand out online.</p>
+    </div>
+    <figure class="plate land">
+      <div class="frame" style="--focus:70% 50%"><img src="assets/jewel-earring.jpg" alt="Model wearing emerald drop earrings"></div>
+      <figcaption class="cap"><b>Statement earrings</b><span>Luxury · Lifestyle</span></figcaption>
+    </figure>
+  </article>
+
+  <article class="ch" style="--accent:var(--gold)">
+    <div class="ch-copy">
+      <div class="label fx">Luxury commercials</div>
+      <h2><span class="ln"><span>Gold, emerald and</span></span><span class="ln"><span><span class="serif">diamonds.</span> No set</span></span><span class="ln"><span>required.</span></span></h2>
+      <p class="fx">Elegant jewellery and accessory films with velvet light, slow close-ups and that perfect sparkle, created entirely with AI.</p>
+    </div>
+    <figure class="plate land">
+      <div class="frame"><img src="assets/jewel-necklace.jpg" alt="Diamond and emerald necklace on navy velvet"></div>
+      <figcaption class="cap"><b>Emerald necklace on velvet</b><span>From one product photo</span></figcaption>
+    </figure>
+  </article>
+
+  <article class="ch" style="--accent:#8A4B3A">
+    <div class="ch-copy">
+      <div class="label fx">Food &amp; lifestyle</div>
+      <h2><span class="ln"><span>Rich chocolate,</span></span><span class="ln"><span>rising steam,</span></span><span class="ln"><span class="serif">everyday life.</span></span></h2>
+      <p class="fx">Indulgent food, warm lifestyle scenes and festive campaigns that make your product part of your customer's day.</p>
+    </div>
+    <figure class="plate port">
+      <div class="frame"><img src="assets/food-chocolate.jpg" alt="Swirl of rich chocolate with steam"></div>
+      <figcaption class="cap"><b>Molten chocolate</b><span>Food · Aesthetic</span></figcaption>
+    </figure>
+  </article>
+
+  <article class="ch" style="--accent:var(--gold)">
+    <div class="ch-copy">
+      <div class="label fx">Your brand next</div>
+      <h2><span class="ln"><span>Let's turn your</span></span><span class="ln"><span>products into</span></span><span class="ln"><span class="serif">visual experiences.</span></span></h2>
+      <div class="ctas fx"><a class="btn btn-fill" href="#contact">Start a project <span class="arr">→</span></a><a class="btn btn-line" href="#formats">See the formats</a></div>
+    </div>
+    <figure class="plate land">
+      <div class="frame" style="--focus:22% 50%"><img src="assets/jewel-gold.jpg" alt="Gold studs with ruby centre beside marigold flowers"></div>
+      <figcaption class="cap"><b>Festive gold</b><span>Festive · Showcase</span></figcaption>
+    </figure>
+  </article>
+
+  <div class="chapnav" aria-label="Chapters">
+    <button data-i="0" aria-current="true">01<span> Intro</span></button>
+    <button data-i="1">02<span> About</span></button>
+    <button data-i="2">03<span> Luxury</span></button>
+    <button data-i="3">04<span> Lifestyle</span></button>
+    <button data-i="4">05<span> Contact</span></button>
+    <div class="bar"><i id="storyBar"></i></div>
+  </div>
+</section>
+
+<div class="banner" aria-hidden="true"><div class="track" id="marq">
+  <span>Product showcase<i>✦</i>Unboxing<i>✦</i>Aesthetic<i>✦</i>Voiceover<i>✦</i>Problem → solution<i>✦</i>Lifestyle<i>✦</i></span>
+  <span>Product showcase<i>✦</i>Unboxing<i>✦</i>Aesthetic<i>✦</i>Voiceover<i>✦</i>Problem → solution<i>✦</i>Lifestyle<i>✦</i></span>
+</div></div>
+
+<!-- ============ FORMATS ============ -->
+<section class="s" id="formats">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="label">What I create</div>
+      <h2>Six ways to make your product <span class="serif">move.</span></h2>
+      <p>Pick a format, or combine a few. Every video is built around your product, your audience and where it will run.</p>
+    </div>
+    <ol class="fmt">
+      <li><a href="#contact" data-img="assets/jewel-gold.jpg"><span class="n">01</span><h3>Product showcase</h3><p>Highlighting features and benefits with clean, confident motion.</p><span class="t">Features &amp; benefits</span><span class="arr">→</span></a></li>
+      <li><a href="#contact" data-img="assets/jewel-necklace.jpg"><span class="n">02</span><h3>Unboxing</h3><p>The reveal and the first look, building excitement around a product.</p><span class="t">Anticipation</span><span class="arr">→</span></a></li>
+      <li><a href="#contact" data-img="assets/food-chocolate.jpg"><span class="n">03</span><h3>Aesthetic</h3><p>Beautiful visuals, slow close-ups and seamless transitions.</p><span class="t">Cinematic</span><span class="arr">→</span></a></li>
+      <li><a href="#contact" data-img="assets/ugc-fragrance.jpg"><span class="n">04</span><h3>Voiceover</h3><p>Explaining products through engaging, story-led narration.</p><span class="t">Storytelling</span><span class="arr">→</span></a></li>
+      <li><a href="#contact" data-img="assets/food-dimsum.jpg"><span class="n">05</span><h3>Problem → solution</h3><p>Showing exactly how your product solves a customer's problem.</p><span class="t">Conversion</span><span class="arr">→</span></a></li>
+      <li><a href="#contact" data-img="assets/jewel-earring.jpg"><span class="n">06</span><h3>Lifestyle</h3><p>Your product in everyday life, exactly where your customer pictures it.</p><span class="t">Relatable</span><span class="arr">→</span></a></li>
+    </ol>
+  </div>
+</section>
+<div class="peek" id="peek" aria-hidden="true"><img alt=""></div>
+
+<!-- ============ WORK ============ -->
+<section class="s" id="work">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="label">My work</div>
+      <h2>Selected <span class="serif">projects.</span></h2>
+      <p>Open a project to read about it. Switch the format to see each campaign as a Reel, a widescreen ad or a feed post.</p>
+    </div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Filter by category">
+        <button aria-pressed="true" data-filter="all">All</button>
+        <button aria-pressed="false" data-filter="luxury">Luxury jewellery</button>
+        <button aria-pressed="false" data-filter="food">Food &amp; indulgence</button>
+        <button aria-pressed="false" data-filter="ugc">UGC &amp; Reels</button>
+      </div>
+      <div class="seg" role="group" aria-label="Aspect ratio">
+        <button aria-pressed="true" data-ar="9/16">9:16 Reels</button>
+        <button aria-pressed="false" data-ar="16/9">16:9 Wide</button>
+        <button aria-pressed="false" data-ar="1/1">1:1 Feed</button>
+      </div>
+    </div>
+    <div class="grid" data-ar="9/16" id="grid">
+      <figure class="item" data-cat="luxury" data-title="Emerald necklace on velvet" data-desc="A slow, glinting reveal of a diamond-and-emerald necklace on deep navy velvet. Built from a single product photograph." data-img="assets/jewel-necklace.jpg">
+        <div class="media" data-video="" data-tolerance="1.25"><img src="assets/jewel-necklace.jpg" alt="Diamond and emerald necklace on navy velvet" loading="lazy"></div>
+        <figcaption><h3>Emerald necklace</h3><span class="tags">Luxury</span></figcaption></figure>
+      <figure class="item" data-cat="luxury" data-title="Statement earrings" data-desc="Model close-up with leaf-cut emerald earrings, soft studio light and a gentle head turn for the sparkle." data-img="assets/jewel-earring.jpg">
+        <div class="media" data-video="" data-fit="cover" data-focus="70% 50%"><img src="assets/jewel-earring.jpg" alt="Model wearing emerald drop earrings" loading="lazy"></div>
+        <figcaption><h3>Statement earrings</h3><span class="tags">Luxury</span></figcaption></figure>
+      <figure class="item" data-cat="luxury" data-title="Festive gold studs" data-desc="Ruby-centred gold studs against marigold and maroon. A festive campaign concept for a heritage jeweller." data-img="assets/jewel-gold.jpg">
+        <div class="media" data-video="" data-tolerance="1.25"><img src="assets/jewel-gold.jpg" alt="Gold studs with ruby centre beside marigold flowers" loading="lazy"></div>
+        <figcaption><h3>Festive gold</h3><span class="tags">Festive</span></figcaption></figure>
+      <figure class="item" data-cat="food" data-title="Molten chocolate" data-desc="Rich chocolate swirl, cocoa dust and curling steam. Pure indulgence in macro." data-img="assets/food-chocolate.jpg">
+        <div class="media" data-video=""><img src="assets/food-chocolate.jpg" alt="Swirl of rich chocolate with steam on slate" loading="lazy"></div>
+        <figcaption><h3>Molten chocolate</h3><span class="tags">Food</span></figcaption></figure>
+      <figure class="item" data-cat="food" data-title="Dim sum dip" data-desc="An editorial food moment: chopsticks, a dumpling and chilli oil in a slow-motion dip." data-img="assets/food-dimsum.jpg">
+        <div class="media" data-video=""><img src="assets/food-dimsum.jpg" alt="Dumpling held by chopsticks over chilli sauce" loading="lazy"></div>
+        <figcaption><h3>Dim sum dip</h3><span class="tags">Food</span></figcaption></figure>
+      <figure class="item" data-cat="ugc" data-title="Azalea fragrance, UGC style" data-desc="A faceless-brand, creator-style fragrance review. Warm home light, natural delivery, made for Reels." data-img="assets/ugc-fragrance.jpg">
+        <div class="media" data-video="" data-focus="26% 40%"><img src="assets/ugc-fragrance.jpg" alt="Woman holding a perfume bottle, creator style" loading="lazy"></div>
+        <figcaption><h3>Fragrance UGC</h3><span class="tags">UGC</span></figcaption></figure>
+      <figure class="item item-ig" data-cat="ugc">
+        <a class="media" data-badge="off" href="https://www.instagram.com/sheclickssuccessforever" target="_blank" rel="noopener"><b>More Reels on Instagram</b><small>@sheclickssuccessforever ↗</small></a>
+        <figcaption><h3>Latest Reels</h3><span class="tags">Instagram</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<dialog class="lb" id="lb" aria-label="Project detail">
+  <button class="lb-close" aria-label="Close">✕</button>
+  <div class="lb-in"><img alt=""><div class="lb-copy"><div class="label lb-cat"></div><h3></h3><p></p><a class="btn" href="#contact">Start a project like this <span class="arr">→</span></a></div></div>
+</dialog>
+
+<!-- ============ WHY ============ -->
+<section class="s" id="why" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="label">Why work with me</div>
+      <h2>Creative possibilities, <span class="serif">without</span> the shoot.</h2>
+    </div>
+    <ul class="why">
+      <li class="reveal"><span class="n">01</span><b>AI-powered video production</b></li>
+      <li class="reveal"><span class="n">02</span><b>Product-focused storytelling</b></li>
+      <li class="reveal"><span class="n">03</span><b>Faceless advertising content</b></li>
+      <li class="reveal"><span class="n">04</span><b>Multiple styles and concepts</b></li>
+      <li class="reveal"><span class="n">05</span><b>Built for Reels and digital ads</b></li>
+      <li class="reveal"><span class="n">06</span><b>Flexible, brand-aligned concepts</b></li>
+    </ul>
+  </div>
+</section>
+
+<section id="process" aria-label="My process">
+  <div class="proc" id="track">
+    <div class="proc-intro"><div class="label">My process</div><h2>Five steps from photo to <span class="serif">final cut.</span></h2><p>A simple, collaborative process from brief to delivery.</p></div>
+    <article class="step"><span class="n">01</span><div><h3>You share</h3><p>Your brand shares product images and campaign requirements.</p></div></article>
+    <article class="step"><span class="n">02</span><div><h3>Concept</h3><p>I develop a creative concept, covering the mood, story, scenes and format.</p></div></article>
+    <article class="step"><span class="n">03</span><div><h3>Create</h3><p>I produce the AI-generated video.</p></div></article>
+    <article class="step"><span class="n">04</span><div><h3>Review</h3><p>We review the video together and make the agreed revisions.</p></div></article>
+    <article class="step"><span class="n">05</span><div><h3>Deliver</h3><p>The final approved video, delivered in the agreed format.</p></div></article>
+  </div>
+  <div class="proc-bar" aria-hidden="true"><i id="procBar"></i></div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="s" id="contact">
+  <div class="wrap contact-grid">
+    <div class="contact-copy">
+      <div class="label">Let's work together</div>
+      <h2>Your product.<br>My creativity.<br><span class="serif">Your visual story.</span></h2>
+      <p>Looking for creative AI video ads for your brand? Let's collaborate and bring your product ideas to life. Available for brand collaborations and creative projects.</p>
+      <div class="links">
+        <a href="mailto:vrushaliwagle2@gmail.com">vrushaliwagle2@gmail.com <span>↗</span></a>
+        <a href="https://www.instagram.com/sheclickssuccessforever" target="_blank" rel="noopener">@sheclickssuccessforever <span>↗</span></a>
+      </div>
+    </div>
+    <form class="inq reveal" id="inq" novalidate>
+      <h3>Project inquiry</h3>
+      <div class="row2">
+        <div class="field"><label for="f-brand">Brand name</label><input id="f-brand" name="brand" autocomplete="organization" placeholder="e.g. Azalea Perfumes"></div>
+        <div class="field"><label for="f-product">Product type</label><input id="f-product" name="product" placeholder="Jewellery, skincare, food…"></div>
+      </div>
+      <div class="field"><span class="lbl" id="fmt-l">Video format / style</span>
+        <div class="chips" role="group" aria-labelledby="fmt-l">
+          <button type="button" data-chip="Product showcase">Showcase</button><button type="button" data-chip="Unboxing">Unboxing</button><button type="button" data-chip="Aesthetic">Aesthetic</button><button type="button" data-chip="Voiceover">Voiceover</button><button type="button" data-chip="Problem-solution">Problem → solution</button><button type="button" data-chip="Lifestyle">Lifestyle</button>
+        </div></div>
+      <div class="field"><label for="f-aspect">Where will it run?</label><select id="f-aspect" name="aspect"><option>Instagram Reels (9:16)</option><option>Widescreen ad (16:9)</option><option>Feed post (1:1)</option><option>Not sure yet</option></select></div>
+      <div class="field"><label for="f-brief">Campaign brief</label><textarea id="f-brief" name="brief" placeholder="Tell me about the product, the mood and your launch date."></textarea></div>
+      <button class="btn" type="submit">Send the brief <span class="arr">→</span></button>
+    </form>
+  </div>
+</section>
+<footer><span>© Visuals by Vrushali · AI video ad creator</span><span><a href="https://www.instagram.com/sheclickssuccessforever" target="_blank" rel="noopener">Instagram</a> · <a href="mailto:vrushaliwagle2@gmail.com">Email</a></span></footer>
+
+<script src="assets/vrushali-kit.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(() => {
+  VRU.initMedia();
+  VRU.initForm(document.getElementById('inq'));
+  const reduce = VRU.reduce;
+  const chs = [...document.querySelectorAll('.ch')];
+  if (!window.gsap) {
+    document.querySelectorAll('.reveal').forEach(e => { e.style.opacity = 1; e.style.transform = 'none'; });
+    return;
+  }
+  gsap.registerPlugin(ScrollTrigger, Flip);
+  const lenis = VRU.initLenis();
+  const hover = matchMedia('(hover: hover)').matches;
+
+  /* ---------- story chapters ---------- */
+  const story = document.getElementById('story');
+  const dots = [...document.querySelectorAll('.chapnav button')];
+  const SC = [
+    { bg: '#1E1513', ink: '#F4ECE2' },
+    { bg: '#EDE3D7', ink: '#1E1513' },
+    { bg: '#141938', ink: '#F4ECE2' },
+    { bg: '#E4D5C3', ink: '#1E1513' },
+    { bg: '#10302A', ink: '#F4ECE2' },
+  ];
+  const N = chs.length - 1;
+  const parts = (c) => ({ lines: c.querySelectorAll('.ln>span'), fx: c.querySelectorAll('.fx'), frame: c.querySelector('.frame'), img: c.querySelector('.frame img'), plate: c.querySelector('.plate'), cap: c.querySelector('.cap') });
+  const HIDE_R = 'inset(0% 0% 0% 100%)', SHOW = 'inset(0% 0% 0% 0%)', HIDE_L = 'inset(0% 100% 0% 0%)';
+  chs.forEach((c, i) => {
+    if (!i) return;
+    const p = parts(c);
+    gsap.set(p.lines, { yPercent: 110 });
+    gsap.set(p.fx, { autoAlpha: 0, y: 24 });
+    gsap.set(p.frame, { clipPath: HIDE_R });
+    gsap.set(p.cap, { autoAlpha: 0 });
+  });
+  let cur = 0;
+  const setChapter = (i) => {
+    if (i === cur) return; cur = i;
+    chs.forEach((c, k) => c.classList.toggle('on', k === i));
+    dots.forEach((d, k) => d.setAttribute('aria-current', k === i ? 'true' : 'false'));
+  };
+  const bar = document.getElementById('storyBar');
+  const tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: story, start: 'top top', end: () => '+=' + innerHeight * N * 1.1,
+      pin: true, scrub: reduce ? true : 0.8, invalidateOnRefresh: true,
+      snap: reduce ? false : { snapTo: 'labelsDirectional', duration: { min: .4, max: .9 }, delay: .08, ease: 'power2.inOut' },
+      onUpdate(self) { setChapter(Math.round(self.progress * N)); bar.style.transform = `scaleX(${self.progress})`; }
+    }
+  });
+  tl.addLabel('c0', 0);
+  for (let i = 1; i <= N; i++) {
+    const t = i - 1, a = parts(chs[i - 1]), b = parts(chs[i]);
+    tl.to(story, { '--bg': SC[i].bg, '--ink': SC[i].ink, duration: .6, ease: 'power1.inOut' }, t + .2)
+      .fromTo(a.lines, { yPercent: 0 }, { yPercent: -110, duration: .35, stagger: .03, ease: 'power2.in', immediateRender: false }, t + .05)
+      .fromTo(a.fx, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -16, duration: .3, ease: 'power2.in', immediateRender: false }, t + .05)
+      .fromTo(a.cap, { autoAlpha: .7 }, { autoAlpha: 0, duration: .2, immediateRender: false }, t + .05)
+      .fromTo(a.frame, { clipPath: SHOW }, { clipPath: HIDE_L, duration: .6, ease: 'power3.inOut', immediateRender: false }, t + .15)
+      .fromTo(a.plate, { xPercent: 0 }, { xPercent: -14, duration: .6, ease: 'power3.inOut', immediateRender: false }, t + .15)
+      .fromTo(b.frame, { clipPath: HIDE_R }, { clipPath: SHOW, duration: .6, ease: 'power3.inOut' }, t + .3)
+      .fromTo(b.img, { scale: 1.25 }, { scale: 1, duration: .8, ease: 'power2.out' }, t + .3)
+      .to(b.lines, { yPercent: 0, duration: .45, stagger: .05, ease: 'power3.out' }, t + .5)
+      .to(b.fx, { autoAlpha: 1, y: 0, duration: .4, stagger: .05, ease: 'power2.out' }, t + .6)
+      .to(b.cap, { autoAlpha: .7, duration: .3 }, t + .8)
+      .addLabel('c' + i, i);
+  }
+  tl.progress(1).progress(0); // record every chapter's resting state before the intro animates
+  dots.forEach((d, i) => d.addEventListener('click', () => {
+    const st = tl.scrollTrigger, y = st.start + (st.end - st.start) * i / N;
+    lenis ? lenis.scrollTo(y, { duration: 1.6 }) : window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+  }));
+  if (!reduce && hover) {
+    story.addEventListener('pointermove', (e) => {
+      const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
+      gsap.to('.ch .frame img', { x: nx * -14, y: ny * -10, duration: 1.4, ease: 'power3.out', overwrite: 'auto' });
+    });
+  }
+
+  /* ---------- entrance ---------- */
+  if (!reduce) {
+    // intro uses different properties from the scroll timeline so the two never fight
+    const p = parts(chs[0]);
+    gsap.timeline({ defaults: { ease: 'expo.out' } })
+      .fromTo(p.plate, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'expo.inOut', clearProps: 'clipPath' }, 0)
+      .from(p.frame, { scale: 1.08, duration: 2 }, 0)
+      .from(chs[0].querySelector('.ch-copy'), { opacity: 0, duration: .8, ease: 'power1.out' }, .3)
+      .from(p.lines, { y: 160, duration: 1.2, stagger: .1 }, .3)
+      .from(p.fx, { yPercent: 40, duration: 1, stagger: .08 }, .55)
+      .from(['.chapnav', '.nav'], { opacity: 0, duration: 1 }, .9);
+  }
+
+  const nav = document.querySelector('.nav');
+  ScrollTrigger.create({ trigger: '.banner', start: 'top top+=80', onEnter: () => nav.classList.add('solid'), onLeaveBack: () => nav.classList.remove('solid') });
+
+  /* ---------- banner ---------- */
+  const marq = document.getElementById('marq');
+  if (!reduce) {
+    const loop = gsap.to(marq, { xPercent: -50, duration: 40, ease: 'none', repeat: -1 });
+    ScrollTrigger.create({ onUpdate(self) {
+      const v = gsap.utils.clamp(-4, 4, self.getVelocity() / 600);
+      gsap.to(loop, { timeScale: 1 + Math.abs(v), duration: .4, overwrite: true });
+    } });
+  }
+
+  /* ---------- reveals ---------- */
+  ScrollTrigger.batch('.reveal', { start: 'top 90%', onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: reduce ? 0 : 1, ease: 'expo.out', stagger: .07, overwrite: true }) });
+  gsap.utils.toArray('.s-head').forEach((h) => gsap.from(h.children, { y: reduce ? 0 : 36, opacity: 0, duration: 1.1, stagger: .08, ease: 'expo.out', scrollTrigger: { trigger: h, start: 'top 85%' } }));
+  gsap.from('.fmt li', { y: reduce ? 0 : 30, opacity: 0, duration: 1, stagger: .06, ease: 'expo.out', scrollTrigger: { trigger: '.fmt', start: 'top 85%' } });
+
+  /* ---------- format preview ---------- */
+  const peek = document.getElementById('peek');
+  if (hover && !reduce) {
+    const px = gsap.quickTo(peek, 'x', { duration: .6, ease: 'power3.out' });
+    const py = gsap.quickTo(peek, 'y', { duration: .6, ease: 'power3.out' });
+    document.querySelectorAll('.fmt a').forEach((a) => {
+      a.addEventListener('pointerenter', () => { peek.querySelector('img').src = a.dataset.img; gsap.to(peek, { opacity: 1, scale: 1, duration: .5, ease: 'power3.out' }); });
+      a.addEventListener('pointerleave', () => gsap.to(peek, { opacity: 0, scale: .9, duration: .4, ease: 'power3.out' }));
+      a.addEventListener('pointermove', (e) => { px(e.clientX + 40); py(e.clientY); });
+    });
+    gsap.set(peek, { xPercent: 0, yPercent: -50 });
+  }
+
+  /* ---------- work ---------- */
+  const grid = document.getElementById('grid');
+  const items = gsap.utils.toArray('.item');
+  const flipDo = (fn) => {
+    const state = Flip.getState(items);
+    fn();
+    Flip.from(state, { duration: reduce ? 0 : .7, ease: 'power3.inOut', scale: true, nested: true,
+      onEnter: (els) => gsap.fromTo(els, { opacity: 0 }, { opacity: 1, duration: .5 }),
+      onLeave: (els) => gsap.to(els, { opacity: 0, duration: .3 }) });
+    items.forEach((it) => { const m = it.querySelector('.media'); if (m && VRU.evalFit) VRU.evalFit(m); });
+    ScrollTrigger.refresh();
+  };
+  document.querySelectorAll('[data-filter]').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-filter]').forEach((x) => x.setAttribute('aria-pressed', x === b));
+    const f = b.dataset.filter;
+    flipDo(() => items.forEach((it) => it.classList.toggle('hide', f !== 'all' && it.dataset.cat !== f)));
+  }));
+  document.querySelectorAll('button[data-ar]').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('button[data-ar]').forEach((x) => x.setAttribute('aria-pressed', x === b));
+    flipDo(() => grid.dataset.ar = b.dataset.ar);
+  }));
+  gsap.from(items, { y: reduce ? 0 : 60, opacity: 0, duration: 1.1, stagger: .07, ease: 'expo.out', scrollTrigger: { trigger: grid, start: 'top 85%' } });
+
+  const lb = document.getElementById('lb');
+  items.forEach((it) => {
+    if (!it.dataset.img) return;
+    it.querySelector('.media').addEventListener('click', () => {
+      lb.querySelector('img').src = it.dataset.img; lb.querySelector('img').alt = it.dataset.title;
+      lb.querySelector('h3').textContent = it.dataset.title; lb.querySelector('p').textContent = it.dataset.desc;
+      lb.querySelector('.lb-cat').textContent = { luxury: 'Luxury jewellery', food: 'Food & indulgence', ugc: 'UGC & Reels' }[it.dataset.cat];
+      lb.showModal();
+      if (!reduce) gsap.fromTo('.lb-in', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: .6, ease: 'expo.out' });
+    });
+  });
+  lb.querySelector('.lb-close').addEventListener('click', () => lb.close());
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+  lb.querySelector('a').addEventListener('click', () => lb.close());
+
+  /* ---------- process ---------- */
+  const mm = gsap.matchMedia();
+  const steps = gsap.utils.toArray('.step');
+  mm.add('(min-width: 900px)', () => {
+    const track = document.getElementById('track');
+    const dist = () => Math.max(0, track.scrollWidth - innerWidth);
+    gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: {
+      trigger: '#process', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: reduce ? true : 0.8, invalidateOnRefresh: true,
+      onUpdate(self) { steps.forEach((s, i) => s.classList.toggle('on', self.progress >= i / steps.length + .02 || (i === 0 && self.progress > 0))); }
+    } }).to(track, { x: () => -dist() }, 0).to('#procBar', { scaleX: 1 }, 0);
+    return () => steps.forEach((s) => s.classList.remove('on'));
+  });
+  mm.add('(max-width: 899px)', () => {
+    steps.forEach((s) => ScrollTrigger.create({ trigger: s, start: 'top 75%', onEnter: () => s.classList.add('on'), onLeaveBack: () => s.classList.remove('on') }));
+  });
+
+  addEventListener('load', () => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>
